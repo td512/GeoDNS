@@ -5,6 +5,8 @@ class CreateCountries < ActiveRecord::Migration[7.0]
       t.references :continent, null: false, foreign_key: true
 
       t.timestamps
+
+      t.index :name
     end
   end
 end
