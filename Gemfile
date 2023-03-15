@@ -73,4 +73,6 @@ group :test do
   gem "webdrivers"
 end
 
-gem 'rubydns'
+gem "rubydns"
+
+gem "strong_migrations"

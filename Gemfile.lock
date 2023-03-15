@@ -197,6 +197,8 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
+    strong_migrations (1.4.4)
+      activerecord (>= 5.2)
     thor (1.2.1)
     timeout (0.3.2)
     timers (4.3.5)
@@ -241,6 +243,7 @@ DEPENDENCIES
   selenium-webdriver
   sprockets-rails
   stimulus-rails
+  strong_migrations
   turbo-rails
   tzinfo-data
   web-console
