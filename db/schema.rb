@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_03_15_044812) do
-  create_table "cities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "cities", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "name"
     t.bigint "state_id", null: false
     t.datetime "created_at", null: false
@@ -19,49 +19,56 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_044812) do
     t.index ["state_id"], name: "index_cities_on_state_id"
   end
 
-  create_table "continents", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "name"
+  create_table "continents", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "name", limit: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_continents_on_name"
   end
 
-  create_table "countries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "countries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "name"
     t.bigint "continent_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["continent_id"], name: "index_countries_on_continent_id"
+    t.index ["name"], name: "index_countries_on_name", length: 768
   end
 
-  create_table "dns_domains", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "domain"
+  create_table "dns_domains", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "domain"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_dns_domains_on_user_id"
   end
 
-  create_table "dns_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "host"
+  create_table "dns_records", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "host"
     t.integer "record_type"
     t.bigint "domain_id"
     t.integer "hits"
     t.boolean "geolocation_enabled"
     t.integer "continent"
-    t.text "country"
+    t.string "country"
     t.text "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["continent"], name: "index_dns_records_on_continent"
+    t.index ["country"], name: "index_dns_records_on_country"
     t.index ["domain_id"], name: "index_dns_records_on_domain_id"
+    t.index ["host"], name: "index_dns_records_on_host"
+    t.index ["record_type"], name: "index_dns_records_on_record_type"
   end
 
-  create_table "hemispheres", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.text "name"
+  create_table "hemispheres", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "name", limit: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_hemispheres_on_name"
   end
 
-  create_table "states", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "states", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.text "name"
     t.bigint "country_id", null: false
     t.datetime "created_at", null: false
