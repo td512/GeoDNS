@@ -1,0 +1,2 @@
+class DnsDomain < ApplicationRecord
+end
