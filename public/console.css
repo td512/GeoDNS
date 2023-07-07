@@ -1,0 +1,25 @@
+.navbar .brand, .navbar-inverse { color: #fff; }
+
+.brand {
+	color: #fff;
+}
+
+.navbar i {
+	margin-top: 2px;
+	padding-right: 5px;
+}
+
+.nav li {
+	font-size: 14px;
+}
+
+.navbar-inner {
+	border-bottom: 0px;
+}
+
+body {
+	background-image: url('/images/scorpio_vnc.png');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+}

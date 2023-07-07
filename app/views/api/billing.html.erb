@@ -1,0 +1,3 @@
+<% Billing.where(:owner => @user.email).pluck(:date_created, :date_due, :amount, :paid, :uuid).reverse.map do |date_created, date_due, amount, paid, uuid| %>
+{"date_created":"<%=date_created%>", "date_due":"<%=date_due%>", "amount":"<%=amount%>", "paid":"<%=paid%>", "uuid":"<%=uuid%>", "status":"ok"}
+<%end%>

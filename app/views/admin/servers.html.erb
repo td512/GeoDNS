@@ -1,0 +1,65 @@
+<% content_for :title, "Servers" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+<h1 class="text-white">Administration Dashboard</h1>
+
+<div class="row">
+  <div class="span3">
+
+<%= render "shared/admin_navbar_servers" %>
+  <div class="span9">
+
+      <div class="tab-content">
+
+        <table class="table table-bordered table-striped" id="vservers">
+          <thead>
+            <tr>
+              <th style="text-align: center;">Owner</th>
+              <th style="text-align: center;">Name</th>
+              <th style="text-align: center;">Operating System</th>
+              <th style="text-align: center;">IP Address</th>
+              <th style="text-align: center;">Disk Space</th>
+              <th style="text-align: center;">Memory</th>
+              <th style="text-align: center;">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+              <% Vm.all.each do |v| %>
+                <tr class="table-item">
+                  <th style="text-align: center;"><%= v.owner %></th>
+                  <th style="text-align: center;"><%= v.hostname %></th>
+                  <th style="text-align: center;"><%= v.os %></th>
+                  <th style="text-align: center;"><%= v.ip_address %></th>
+                  <th style="text-align: center;"><%= v.disk %></th>
+                  <th style="text-align: center;"><%= v.memory %></th>
+                  <th style="text-align: center;"><a href="<%= admin_destroy_servers_path(v.uuid) %>">Destroy</a> / <a target="_blank" class="launchconsole" href="<%= vnc_path(v.uuid) %>">VNC</a></th>
+              </tr><% end %>
+                </tbody>
+        </table>
+                </div>
+              </div>
+            </div>
+
+
+      </div>
+
+
+  </div>
+</div>
+<script>
+$('.launchconsole').click(function() {
+
+		window.open($(this).attr('href'),'', 'scrollbars=no,location=no,status=no,toolbar=no,menubar=no,width=640,height=550');
+
+		return false;
+
+	});
+  </script>
+
+<%= render "shared/footer" %>

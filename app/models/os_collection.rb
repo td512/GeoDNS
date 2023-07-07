@@ -1,0 +1,2 @@
+class OsCollection < ApplicationRecord
+end

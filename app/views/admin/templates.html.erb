@@ -1,0 +1,151 @@
+<% content_for :title, "OS Templates" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+<h1 class="text-white">Administration Dashboard</h1>
+
+<div class="row">
+  <div class="span3">
+
+<%= render "shared/admin_navbar_templates" %>
+  <div class="span9">
+
+    <div id="buttons" class="mb-3">
+      <div class="clearfix">
+        <div class="float-right">
+          <a href="#"><input type="submit" value="Create Template" class="btn btn-small btn-success create" data-disable-with="Create Template"></a>
+        </div>
+      </div>
+    </div>
+
+        <table class="table table-bordered table-striped" id="vservers">
+          <caption>OS Templates</caption>
+          <thead>
+            <tr>
+              <th style="text-align: center;">Name</th>
+              <th style="text-align: center;">Belongs to</th>
+              <th style="text-align: center;">Image</th>
+              <th style="text-align: center;">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+              <% OsTemplate.all.each do |t| %>
+                <tr class="table-item">
+                  <th style="text-align: center;"><%= t.name %></th>
+                  <th style="text-align: center;"><%= t.belongs_to %></th>
+                  <th style="text-align: center;"><img src="/images/<%= t.os_image %>.png" width="100" height="100" /></th>
+                  <th style="text-align: center;"><a href="#" class="edit" data-name="<%=t.name%>" data-belongs="<%=t.belongs_to%>" data-image="<%=t.os_image%>" data-tid="<%= t.id %>" data-iso="<%= t.image_location %>">Edit</a> / <a href="<%= admin_destroy_templates_path(t.id) %>">Delete</a></th>
+              </tr><% end %>
+                </tbody>
+        </table>
+                </div>
+              </div>
+            </div>
+
+
+      </div>
+      <%= form_for(:edit, :url => admin_edit_templates_path) do |f| %>
+      <div id="edit-modal" class="modal hide fade">
+        <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+
+          <div class="modal-header no-border">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Edit Template</h3>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+
+              <label>Name</label>
+              <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1"  %>
+
+              <label>Belongs to</label>
+              <%= f.collection_select(:belongs, OsCollection.all, :id, :name, {:include_blank => 'Please Select One'}, :style => "width: 400px;") %>
+              
+              <label>Template Icon</label>
+              <%= f.text_field :image, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Icon", :rows => "1"  %>
+              <%= f.hidden_field :tid %>
+              
+              <label>ISO</label>
+              <%= f.text_field :iso, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "ISO", :rows => "1"  %>
+
+            </div>
+
+          </div>
+          <div class="modal-footer no-border">
+
+            <%= f.submit "Edit", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+          </div>
+        </div>
+      </div>
+      <%end%>
+
+      <%= form_for(:create, :url => admin_create_templates_path) do |f| %>
+      <div id="create-modal" class="modal hide fade">
+        <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+          <div class="modal-header no-border">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Create Template</h3>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+
+              <label>Name</label>
+              <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1" %>
+
+              <label>Belongs to</label>
+              <%= f.collection_select(:belongs, OsCollection.all, :id, :name, {:include_blank => 'Please Select One'}, :style => "width: 400px;") %>
+
+              <label>Template Icon</label>
+              <%= f.text_field :image, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Icon", :rows => "1"  %>
+              
+              <label>ISO</label>
+              <%= f.text_field :iso, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "ISO", :rows => "1"  %>
+
+            </div>
+
+          </div>
+          <div class="modal-footer no-border">
+
+            <%= f.submit "Create", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+            <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+          </div>
+        </div>
+      </div>
+      <%end%>
+
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+  $('.edit').click(function() {
+  name = $(this).data('name');
+  belongs = $(this).data('belongs');
+  image = $(this).data('image');
+  tid = $(this).data('tid');
+  iso = $(this).data('iso');
+  modal = $('#edit-modal');
+  $('#edit_name').attr("value", name);
+  $('#edit_image').attr("value", belongs);
+  $('#edit_description').html(image);
+  $('#edit_tid').attr("value", tid);
+  $('#edit_iso').attr("value", iso);
+  modal.modal('show');
+
+  });
+  $('.create').click(function() {
+    modal = $('#create-modal');
+    $('#create_name', modal).val('');
+    $('#create_belongs', modal).val('');
+    $('#create_image', modal).val('');
+    modal.modal('show');
+
+  });
+});
+</script>
+<%= render "shared/footer" %>

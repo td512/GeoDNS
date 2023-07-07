@@ -1,0 +1,2 @@
+class IpPool < ApplicationRecord
+end

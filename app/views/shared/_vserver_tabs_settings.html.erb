@@ -1,0 +1,61 @@
+<ul class="nav nav-tabs" role="tab-list">
+  <%if params[:id] != nil%>
+    <li class="nav-item">
+      <a href="<%= vserver_path(params[:id]) %>" class="nav-link">Overview</a>
+    </li>
+
+    <li class="nav-item">
+      <a href="<%= vserver_settings_path %>" class="nav-link active">Settings</a>
+    </li>
+
+    <li class="nav-item">
+      <a href="<%= vserver_networking_path %>" class="nav-link">Networking</a>
+    </li>
+
+    <li class="nav-item">
+      <a href="<%= vserver_media_path %>" class="nav-link">Images</a>
+    </li>
+
+    <li class="nav-item">
+      <a href="#" id="destroy" class="nav-link">Destroy</a>
+    </li>
+  <%end%>
+</ul>
+
+<%if params[:id] != nil%>
+<%= form_tag(vserver_destroy_path) do %>
+<div id="destroy-modal" class="modal hide fade">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">&times;</a>
+    <h3>Destroy Virtual Server</h3>
+  </div>
+  <div class="modal-body">
+    <p>
+
+    <label>Virtual Server</label>
+    <% Vm.where(:uuid => params[:id]).pluck(:hostname).map do |hostname| %>
+    <span class="uneditable-input medianame" style="width: 400px;"><%= hostname %></span>
+    <%end%>
+
+    <div class="password">
+      <p class="help">
+
+        This will immediately destroy your virtual server
+
+      </p>
+
+      <br />
+
+    </div>
+
+    </p>
+  </div>
+  <div class="modal-footer">
+
+    <%= submit_tag "Destroy", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+    <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  </div>
+</div>
+<%end%>
+<%end%>
+<script src="/javascripts/destroy.js"></script>

@@ -1,0 +1,73 @@
+<% content_for :title, "Virtual Server" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+<%= render "shared/navbar" %>
+
+
+<div class="container pt-4">
+
+	<%= render "shared/vserver_options" %>
+	
+	<%= render "shared/vserver_tabs_overview" %>
+
+	<div class="row">
+		<div class="span6">
+
+			<div class="server-info">
+
+				<div class="control-group">
+					<label class="control-label"
+						style="float: left; width: 150px; padding-right: 30px; text-align: right;">Status</label>
+					<div class="controls">
+						<div class="server-status">
+							<div class="label">GETTING STATUS</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"
+						style="float: left; width: 150px; padding-right: 30px; text-align: right;">Virtualization</label>
+					<div class="controls">
+						<b>KVM</b>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"
+						style="float: left; width: 150px; padding-right: 30px; text-align: right;">Main IP Address</label>
+					<div class="controls">
+						<% Vm.where(:uuid => params[:id]).pluck(:ip_address).map do |ip| %>
+						<b><% if ip == 'DHCP' %>Assigned by DHCP<%else%><%= ip %><%end%><%end%></b>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"
+						style="float: left; width: 150px; padding-right: 30px; text-align: right;">CPU Cores</label>
+					<div class="controls">
+						<b>1</b>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<div class="span6">
+
+			<div class="vm-stats">
+				<ul>
+					<li>
+						<div class="control-group">
+							<label class="control-label" style="float: left; width: 100px;"></label>
+							<div class="controls">
+								<div class="description description-bandwidth"></div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%= render "shared/vm_status" %>
+<%= render "shared/footer" %>

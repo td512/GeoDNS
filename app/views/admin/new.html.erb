@@ -1,0 +1,23 @@
+<% content_for :title, "Administration" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+  <h1 class="text-white">Administration Dashboard</h1>
+
+  <div class="row">
+      <%= render "shared/admin_navbar_home" %>
+  </div>
+  
+  <div class="tab-content">
+    <div class="tab-pane active" style="position: relative; top: 100px;">
+      <p style="font-size: 40px; text-align: center;">Please pick something </p>
+    </div>
+  </div>
+</div>
+
+<%= render "shared/footer" %>

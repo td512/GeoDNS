@@ -1,0 +1,88 @@
+<% content_for :title, "Virtual Server Images" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+<%= render "shared/navbar" %>
+<%= render "shared/vserver_options" %>
+
+<%= render "shared/vserver_tabs_media" %>
+
+<div class="alert alert-info alert-block">
+  <h4>Hey! Listen!</h4>
+        Your machine must be on for this to work
+    </div>
+<div class="row">
+  <div class="span3">
+
+
+    <div class="sidenav affix-top" data-spy="affix" data-offset-top="320">
+      <div class="section-header">Categories</div>
+      <ul class="nav nav-list"><% OsCollection.pluck(:url, :name).map do |url, name|%>
+                                                                                          <li><a href="#<%= url %>" data-toggle="tab"><i class="icon-chevron-right pull-right"></i><%=name%> (<%=OsTemplate.where(:belongs_to => name).count%>)</a></li><%end%>
+                                                                                                                                          </ul>
+    </div>
+  </div>
+  <div class="span9">
+
+
+      <div class="tab-content">
+
+                  <div class="tab-pane active" style="position: relative; top: 100px;">
+                      <p style="font-size: 40px; text-align: center;">Please pick a category.</p>
+                  </div>
+
+                  <% OsCollection.pluck(:name, :url, :description).map do |name, url, description|%>
+
+
+                    <div class="tab-pane" id="<%= url %>">
+
+                                    <div class="alert alert-info alert-block">
+                          <h4>About these templates</h4>
+                          <%= description %><br>
+                          <br>
+                        </div>
+                      <table class="table table-bordered table-striped">
+                        <caption>Operating Systems</caption>
+                        <colgroup>
+                          <col class="span1">
+                          <col class="span1">
+                        </colgroup>
+
+                        <tbody>
+                          <% OsTemplate.where(:belongs_to => name).pluck(:name, :os_image).map do |tname, os_image|%>
+                          <form action="<%= vserver_media_path %>" method="post">
+                                          <tr>
+                            <td>
+                              <div class="media">
+                                <a class="pull-left" href="#">
+
+                                  <img class="media-object" src="/images/<%= os_image %>.png">
+                                </a>
+                                <div class="media-body">
+                                  <h4 class="media-heading"><%= tname %>  </h4>
+                                  <% tname %>											</div>
+                              </div>
+                            </td>
+                            <td class="td-btn-reinstall">
+                              <button type="submit" class="reinstall btn btn-danger">Mount it!</button>
+                              <input type="hidden" name="os_name" value="<%= tname %>" />
+                            </td>
+                          </tr>
+                              </form>
+                          <%end%>
+                                        </tbody>
+                      </table>
+                    </div><%end%>
+              </div>
+
+            </div>
+
+
+      </div>
+
+
+  </div>
+</div>
+
+<%= render "shared/footer" %>
+<%= render "shared/vm_status" %>

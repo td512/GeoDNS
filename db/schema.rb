@@ -10,73 +10,141 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_15_044812) do
-  create_table "cities", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.text "name"
-    t.bigint "state_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["state_id"], name: "index_cities_on_state_id"
+ActiveRecord::Schema[7.0].define(version: 2017_06_11_222758) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "actions", id: :serial, force: :cascade do |t|
+    t.string "action"
+    t.string "owner"
+    t.string "ip"
+    t.string "date"
+    t.string "status"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "continents", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "name", limit: 1
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_continents_on_name"
+  create_table "addresses", id: :serial, force: :cascade do |t|
+    t.string "address"
+    t.string "belongs_to"
+    t.string "used"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "countries", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.text "name"
-    t.bigint "continent_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["continent_id"], name: "index_countries_on_continent_id"
-    t.index ["name"], name: "index_countries_on_name", length: 768
+  create_table "announcements", id: :serial, force: :cascade do |t|
+    t.string "announcements"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "dns_domains", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "domain"
-    t.bigint "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_dns_domains_on_user_id"
+  create_table "billings", id: :serial, force: :cascade do |t|
+    t.string "owner"
+    t.string "date_created"
+    t.string "date_due"
+    t.string "amount"
+    t.string "paid"
+    t.string "uuid"
+    t.string "description"
+    t.string "transaction_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "dns_records", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "host"
-    t.integer "record_type"
-    t.bigint "domain_id"
-    t.integer "hits"
-    t.boolean "geolocation_enabled"
-    t.integer "continent"
-    t.string "country"
-    t.text "city"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["continent"], name: "index_dns_records_on_continent"
-    t.index ["country"], name: "index_dns_records_on_country"
-    t.index ["domain_id"], name: "index_dns_records_on_domain_id"
-    t.index ["host"], name: "index_dns_records_on_host"
-    t.index ["record_type"], name: "index_dns_records_on_record_type"
+  create_table "ip_pools", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "range_start"
+    t.string "range_end"
+    t.string "subnet_mask"
+    t.string "gateway"
+    t.string "owner"
+    t.string "used"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "hemispheres", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "name", limit: 1
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_hemispheres_on_name"
+  create_table "nodes", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "vm_count"
+    t.string "ip"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "states", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.text "name"
-    t.bigint "country_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["country_id"], name: "index_states_on_country_id"
+  create_table "os_collections", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "description"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  add_foreign_key "cities", "states"
-  add_foreign_key "countries", "continents"
-  add_foreign_key "states", "countries"
+  create_table "os_templates", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "image_location"
+    t.string "belongs_to"
+    t.string "os_image"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "plans", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.string "cores"
+    t.string "memory"
+    t.string "hdd"
+    t.string "used"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "tickets", id: :serial, force: :cascade do |t|
+    t.string "owner"
+    t.string "title"
+    t.string "body"
+    t.string "date"
+    t.string "last_reply"
+    t.string "status"
+    t.string "ticket_id"
+    t.string "ticket_num"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "users", id: :serial, force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "password_digest"
+    t.string "reset"
+    t.string "activation_code"
+    t.boolean "activated"
+    t.string "token"
+    t.string "original_token"
+    t.string "style"
+    t.integer "level"
+    t.boolean "enabled"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "vms", id: :serial, force: :cascade do |t|
+    t.string "hostname"
+    t.string "os"
+    t.string "ip_address"
+    t.string "disk"
+    t.string "memory"
+    t.string "traffic"
+    t.string "uuid"
+    t.string "owner"
+    t.string "port"
+    t.string "ws_port"
+    t.string "vnc_pw"
+    t.string "disk_uuid"
+    t.string "hv"
+    t.string "mac"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
 end

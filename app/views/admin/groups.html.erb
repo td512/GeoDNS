@@ -1,0 +1,141 @@
+<% content_for :title, "OS Collections" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+  <h1 class="text-white">Administration Dashboard</h1>
+
+  <div class="row">
+    <div class="span3">
+    <%= render "shared/admin_navbar_groups" %>
+  
+      <div class="span9">
+        <div class="tab-content">
+
+          <div id="buttons" class="mb-3">
+            <div class="clearfix">
+              <div class="float-right">
+                <a href="#"><input type="submit" value="Create Collection" class="btn btn-small btn-success create" data-disable-with="Create Collection"></a>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-bordered table-striped" id="vservers">
+            <thead>
+              <tr>
+                <th style="text-align: center;">Name</th>
+                <th style="text-align: center;">Fragment</th>
+                <th style="text-align: center;">Description</th>
+                <th style="text-align: center;">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% OsCollection.all.each do |c| %>
+                <tr class="table-item">
+                  <th style="text-align: center;"><%= c.name %></th>
+                  <th style="text-align: center;"><%= c.url %></th>
+                  <th style="text-align: center;"><%= c.description %></th>
+                  <th style="text-align: center;"><a href="#" class="edit" data-name="<%=c.name%>" data-fragment="<%=c.url%>" data-description="<%=c.description%>" data-gid="<%= c.id %>">Edit</a> / <a href="<%= admin_destroy_groups_path(c.id) %>">Delete</a></th>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= form_for(:edit, :url => admin_edit_groups_path) do |f| %>
+<div id="edit-modal" class="modal hide fade">
+  <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+    <div class="modal-header no-border">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Edit Collection</h3>
+    </div>
+    <div class="modal-body no-border">
+      <div class="form-group">
+
+        <label>Name</label>
+        <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1" %>
+
+        <label>URL fragment</label>
+        <%= f.text_field :fragment, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "URL", :rows => "1" %>
+
+        <label>Description</label>
+        <%= f.text_area :description, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Description", :rows => "2" %>
+        <%= f.hidden_field :gid %>
+
+      </div>
+    </div>
+    <div class="modal-footer no-border">
+
+      <%= f.submit "Edit", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+</div>
+<%end%>
+
+<%= form_for(:create, :url => admin_create_groups_path) do |f| %>
+<div id="create-modal" class="modal hide fade">
+  <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+    <div class="modal-header no-border">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Create Collection</h3>
+    </div>
+    <div class="modal-body">
+    
+      <div class="form-group">
+
+      <label>Name</label>
+      <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1" %>
+
+      <label>URL fragment</label>
+      <%= f.text_field :fragment, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "URL", :rows => "1" %>
+
+      <label>Description</label>
+      <%= f.text_area :description, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Description", :rows => "2" %>
+
+      </div>
+
+    </div>
+    <div class="modal-footer no-border">
+
+      <%= f.submit "Create", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+</div>
+<%end%>
+
+<script>
+  $(document).ready(function() {
+    $('.edit').click(function() {
+    name = $(this).data('name');
+    fragment = $(this).data('fragment');
+    description = $(this).data('description');
+    gid = $(this).data('gid');
+    modal = $('#edit-modal');
+    $('#edit_name').attr("value", name);
+    $('#edit_fragment').attr("value", fragment);
+    $('#edit_description').html(description);
+    $('#edit_gid').attr("value", gid);
+    modal.modal('show');
+
+    });
+    $('.create').click(function() {
+      modal = $('#create-modal');
+      $('#create_name', modal).val('');
+      $('#create_fragment', modal).val('');
+      $('#create_description', modal).val('');
+      modal.modal('show');
+
+    });
+  });
+</script>
+
+<%= render "shared/footer" %>

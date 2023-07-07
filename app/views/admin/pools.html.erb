@@ -1,0 +1,110 @@
+<% content_for :title, "Pools" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+<h1 class="text-white">Administration Dashboard</h1>
+
+<div class="row">
+  <div class="span3">
+
+
+    <%= render "shared/admin_navbar_pools" %>
+  <div class="span9">
+
+    <div id="buttons" class="mb-3">
+      <div class="clearfix">
+        <div class="float-right">
+          <a href="#"><input type="submit" value="Create Pool" class="btn btn-small btn-success create" data-disable-with="Create Pool"></a>
+        </div>
+      </div>
+    </div>
+
+        <table class="table table-bordered table-striped" id="vservers">
+          <thead>
+            <tr>
+              <th style="text-align: center;">Name</th>
+              <th style="text-align: center;">Range Start</th>
+              <th style="text-align: center;">Range End</th>
+              <th style="text-align: center;">Subnet Mask</th>
+              <th style="text-align: center;">Gateway</th>
+              <th style="text-align: center;">In Use</th>
+              <th style="text-align: center;">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+              <% IpPool.all.each do |i| %>
+                <tr class="table-item">
+                  <th style="text-align: center;"><%= i.name %></th>
+                  <th style="text-align: center;"><%= i.range_start %></th>
+                  <th style="text-align: center;"><%= i.range_end %></th>
+                  <th style="text-align: center;"><%= i.subnet_mask %></th>
+                  <th style="text-align: center;"><%= i.gateway %></th>
+                  <th style="text-align: center;"><%= i.used %></th>
+                  <th style="text-align: center;"><a href="<%= admin_pools_destroy_path(i.id) %>">Destroy</a></th>
+              </tr><% end %>
+                </tbody>
+        </table>
+                </div>
+              </div>
+            </div>
+
+
+      </div>
+
+
+  </div>
+</div>
+<%= form_for(:create, :url => admin_pools_create_path) do |f| %>
+<div id="create-modal" class="modal hide fade">
+  <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+    <div class="modal-header no-border">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Create Pool</h3>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>Name</label>
+        <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1"  %>
+        <label>Belongs to</label>
+        <%= f.collection_select(:belongs, Node.all, :id, :name, {:include_blank => 'Please Select One'}, :style => "width: 400px;", :class => "form-control custom-input-dark") %>
+        <label>IP Range Start</label>
+        <%= f.text_field :start, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Start", :rows => "1" %>
+        <label>IP Range End</label>
+        <%= f.text_field :end, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "End", :rows => "1" %>
+        <label>Subnet Mask</label>
+        <%= f.text_field :subnet, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Mask", :rows => "1" %>
+        <label>Gateway</label>
+        <%= f.text_field :gateway, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Gateway", :rows => "1" %>
+      </div>
+
+    </div>
+    <div class="modal-footer no-border">
+
+      <%= f.submit "Create", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+</div>
+<%end%>
+<script>
+$(document).ready(function() {
+$('.create').click(function() {
+modal = $('#create-modal');
+$('#create_name', modal).val('');
+$('#create_start', modal).val('');
+$('#create_end', modal).val('');
+$('#create_subnet', modal).val('');
+$('#create_gateway', modal).val('');
+modal.modal('show');
+
+});
+});
+</script>
+<%= render "shared/footer" %>

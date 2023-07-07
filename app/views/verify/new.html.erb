@@ -1,0 +1,16 @@
+<% content_for :title, "Verify your email" %>
+<% content_for :font, "https://fonts.googleapis.com/css?family=Montserrat:200" %>
+<% content_for :stylesheet, "login.css" %>
+<% content_for :login, "1" %>
+<ul class="notice errors">
+<li>Please enter the verification code we sent you.</li>
+</ul>
+<%= image_tag "logo-text-white.png", :height => '55', :class => 'logo' %> <!-- 180^2 for signup -->
+
+<%= form_for(:session, url: verify_path, :html => {:class => 'vertical-form'}) do |f| %>
+<legend>
+Verify
+</legend>
+<%= f.text_field :code, :placeholder => "Verification Code", :maxlength => 12 %>
+   <%= f.submit "Verify" %>
+<% end %>

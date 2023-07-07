@@ -1,0 +1,3 @@
+<% Action.where(:owner => @user.email).pluck(:id, :action, :ip, :date, :status).reverse.map do |id, action, ip, date, status| %>
+{"id":"<%=id%>", "action":"<%=action%>", "ip":"<%=ip%>", "date":"<%=date%>", "log_status":"<%=status%>", "status":"ok"}
+<%end%>

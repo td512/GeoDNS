@@ -1,0 +1,60 @@
+<% content_for :title, "Activity" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pb-5" style="padding-top: 25px;">
+
+	<h1 class="text-white">Account Activity</h1>
+
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb custom-item-bg-dark ">
+			<li class="breadcrumb-item">
+				<a href="/dash">Dashboard</a>
+			</li>
+			<li class="breadcrumb-item svg-filter-white">Account Activity</li>
+		</ol>
+	</nav>
+
+	
+		<table class="table text-white">
+			<thead>
+				<tr>
+					<th width="30" style="text-align: center;">#</th>
+					<th style="border: none;">Description</th>
+					<th style="text-align: center; border: none;">IP Address</th>
+					<th style="text-align: center; border: none;">Date</th>
+					<th style="text-align: center; border: none;">Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% Action.where(:owner => current_user.email).pluck(:id, :action, :ip, :date, :status).reverse.map do |id, action, ip, date, status| %>
+					<tr class="table-item">
+						<td style="text-align: center; border: none;">
+							<%= id %>
+						</td>
+						<td style="border: none;">
+							<%= action %>
+						</td>
+						<td style="text-align: center; border: none;">
+							<%= ip %>
+						</td>
+						<td style="text-align: center; border: none;">
+							<%= date %>
+						</td>
+						<td style="text-align: center; font-weight: bold; border: none;">
+							<span class="text-success">
+								<%= status %>
+							</span>					
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+</div>
+
+
+<%= render "shared/footer" %>

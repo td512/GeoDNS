@@ -1,0 +1,116 @@
+<% content_for :title, "Announcements" %>
+<% content_for :new_layout, "1" %>
+<% content_for :bss, "bootstrapSwitch.css" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+  <h1 class="text-white">Administration Dashboard</h1>
+
+  <%= render "shared/admin_navbar_announcements" %>
+
+  <div class="tab-content">
+
+    <div id="buttons" class="mb-3">
+      <div class="clearfix">
+        <div class="float-right">
+          <a href="#"><input type="submit" value="Create Announcement" class="btn btn-small btn-success create"
+              data-disable-with="Create Announcement" data-toggle="modal" data-target="#create-modal"></a>
+        </div>
+      </div>
+    </div>
+
+
+    <table class="table text-white">
+      <thead>
+        <tr>
+          <th style="text-align: center;">Announcement</th>
+          <th style="text-align: center;">Options</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% Announcement.all.each do |a| %>
+        <tr class="table-item">
+          <th style="text-align: center;"><%= a.announcements %></th>
+          <th style="text-align: center;"><a href="<%= admin_announcements_destroy_path(a.id) %>">Destroy</a> / <a
+              href="#" class="edit" data-announcement="<%=a.announcements%>" data-aid="<%=a.id%>">Edit</a></th>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%= form_for(:create, :url => admin_announcements_create_path) do |f| %>
+<div id="create-modal" class="modal hide fade">
+  <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+    <div class="modal-header no-border">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Create Announcement</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+
+        <label>Announcement</label>
+        <%= f.text_area :announcement, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Announcement", :rows => "3" %>
+
+      </div>
+    </div>
+    <div class="modal-footer no-border">
+
+      <%= f.submit "Create", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+</div>
+<%end%>
+
+<%= form_for(:edit, :url => admin_announcements_edit_path) do |f| %>
+<div id="edit-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
+    <div class="modal-header no-border">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Edit Announcement</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+
+        <label>Announcement</label>
+        <%= f.text_area :announcement, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Announcement", :rows => "3" %>
+
+      </div>
+    </div>
+    <div class="modal-footer no-border">
+
+      <%= f.submit "Edit", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+</div>
+<%end%>
+
+
+<script>
+  $(document).ready(function () {
+    $('.edit').click(function () {
+      announcement = $(this).data('announcement');
+      aid = $(this).data('aid');
+      modal = $('#edit-modal');
+      $('#edit_announcement').html(announcement);
+      $('#edit_aid', modal).val(aid);
+      modal.modal('show');
+    });
+    $('.create').click(function () {
+      $('#create-modal').modal();
+      $(document).off('focusin.modal');
+    });
+  });
+
+  
+</script>
+
+<%= render "shared/footer" %>

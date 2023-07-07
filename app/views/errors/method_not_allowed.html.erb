@@ -1,0 +1,14 @@
+<% content_for :title, "405 Method Not Allowed" %>
+<% content_for :font, "https://fonts.googleapis.com/css?family=Montserrat:200" %>
+<% content_for :stylesheet, "login.css" %>
+<% content_for :login, "1" %>
+<ul class="notice errors">
+<li>Whoops! That doesn't look quite right.</li>
+</ul>
+<%= image_tag "logo-text-white.png", :height => '55', :class => 'logo' %> <!-- 180^2 for signup -->
+
+<%= form_tag("", :class => 'vertical-form') do |f| %>
+<legend>
+Method Not Allowed
+</legend>
+<% end %>

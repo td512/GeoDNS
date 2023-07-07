@@ -1,0 +1,44 @@
+<% content_for :title, "Virtual Server Networking" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+<%= render "shared/navbar" %>
+<%= render "shared/vserver_options" %>
+
+<%= render "shared/vserver_tabs_networking" %>
+
+      <div class="row">
+        <div class="span12">
+
+          <table class="table table-bordered table-striped">
+            <caption>IPv4 Network Settings</caption>
+            <tbody>
+              <tr>
+                <td width="200">Main IP Address</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td width="200">Gateway</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td width="200">Netmask</td>
+                <td></td>
+              </tr>
+                              <tr>
+                <td width="200">Recommended Resolver #1</td>
+                <td>8.8.8.8</td>
+              </tr>
+                                              <tr>
+                <td width="200">Recommended Resolver #2</td>
+                <td>8.8.4.4</td>
+              </tr>
+                            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+<%= render "shared/footer" %>
+<%= render "shared/vm_status" %>

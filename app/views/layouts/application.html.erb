@@ -1,15 +1,98 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>GeoDns</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Neutron Cloud Runners - <%= yield(:title) %></title>
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <% if content_for?(:new_layout) %>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="Neutron Cloud Runners">
+      <!-- Begin loading animation -->
+      <link href="/assets/css/loaders/loader-pulse.css" rel="stylesheet" type="text/css" media="all" />
+      <!-- End loading animation -->
+      <link href="/assets/css/theme.css" rel="stylesheet" type="text/css" media="all" />
+      <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,700&display=swap" rel="stylesheet">
+    <% end %>
+    <% if content_for?(:font) %>
+    <%= stylesheet_link_tag yield(:font), :media => "all" %>
+    <% end %>
+    <% if content_for?(:font_narrow) %>
+    <%= stylesheet_link_tag yield(:font_narrow), :media => "all" %>
+    <% end %>
+    <% if content_for?(:framework) %>
+    <%= stylesheet_link_tag yield(:framework), :media => "all" %>
+    <% end %>
+    <% if content_for?(:frameworkr) %>
+    <%= stylesheet_link_tag yield(:frameworkr), :media => "all" %>
+    <% end %>
+    <% if content_for?(:stylesheet) %>
+    <%= stylesheet_link_tag yield(:stylesheet), :media => "all" %>
+    <% end %>
+    <% if content_for?(:body) %>
+    <style>body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      @media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+    </style>
+    <% end %>
+    <% if content_for?(:fa) %>
+    <%= stylesheet_link_tag yield(:fa), :media => "all" %>
+    <% end %>
+    <% if content_for?(:faie) %>
+    <%= stylesheet_link_tag yield(:faie), :media => "all" %>
+    <% end %>
+    <% if content_for?(:bss) %>
+    <%= stylesheet_link_tag yield(:bss), :media => "all" %>
+    <% end %>
+    <% if content_for?(:vnc) %>
+    <style>body {
+        font-family: 'PT Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background: #000;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        margin: 0px;
+        padding: 0px;
+        background-image: url('/images/scorpio_vnc.png');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+      }
+    </style>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+<script type="text/javascript" src="/novnc/webutil.js"></script><script type="text/javascript" src="/novnc/base64.js"></script><script type="text/javascript" src="/novnc/websock.js"></script><script type="text/javascript" src="/novnc/des.js"></script><script type="text/javascript" src="/novnc/input.js"></script><script type="text/javascript" src="/novnc/display.js"></script><script type="text/javascript" src="/novnc/jsunzip.js"></script><script type="text/javascript" src="/novnc/rfb.js"></script>
+<% end %>
+    <% if content_for?(:new_layout) %>
+      <style>
+        html {
+          position: relative;
+          min-height: 100%;
+        }
+        body {
+          margin-bottom: 170px; /* Margin bottom by footer height */
+        }
+        .footer-1 {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 170px;
+          line-height: 60px;
+        }
+      </style>
+      <script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+      <script type="text/javascript" src="/assets/js/popper.min.js"></script>
+      <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+  <% end %>
+    <!-- NCR Render Time: <%= Time.now-@start_time %> seconds -->
   </head>
 
-  <body>
+<%if content_for?(:login) %><style> body {font-family: "helvetica neue", "helvetica", "arial", sans-serif;}</style><body class="login"><%end%> <body>
     <%= yield %>
+    <% if content_for?(:new_layout) %>
+      <%= render 'shared/scripts' %>
+  <% end %>
   </body>
 </html>

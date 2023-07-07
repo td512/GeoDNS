@@ -1,0 +1,104 @@
+<% content_for :title, "Plans" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+  <h1 class="text-white">Administration Dashboard</h1>
+
+  <div class="row">
+    <div class="span3">
+    <%= render "shared/admin_navbar_plans" %>
+      
+      <div class="span9">
+        <div class="tab-content">
+
+          <div id="buttons" class="mb-3">
+            <div class="clearfix">
+              <div class="float-right">
+                <a href="#"><input type="submit" value="Create Plan" class="btn btn-small btn-success create" data-disable-with="Create Plan"></a>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-bordered table-striped" id="vservers">
+            <thead>
+              <tr>
+                <th style="text-align: center;">Name</th>
+                <th style="text-align: center;">Cores</th>
+                <th style="text-align: center;">Memory</th>
+                <th style="text-align: center;">HDD Space</th>
+                <th style="text-align: center;">Amount Used</th>
+                <th style="text-align: center;">Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% Plan.all.each do |x| %>
+                <tr class="table-item">
+                  <th style="text-align: center;"><%= x.name %></th>
+                  <th style="text-align: center;"><%= x.cores %></th>
+                  <th style="text-align: center;"><%= x.memory %>MB</th>
+                  <th style="text-align: center;"><%= x.hdd %>GB</th>
+                  <th style="text-align: center;"><%= x.used %></th>
+                  <th style="text-align: center;"><a href="<%= admin_plans_destroy_path(x.id) %>">Delete</a></th>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= form_for(:create, :url => admin_plans_create_path) do |f| %>
+<div id="create-modal" class="modal hide fade">
+  <div class="container modal-dialog modal-content  card custom-item-bg-dark custom-modal text-white">
+    <div class="modal-header no-border">
+      <a class="close" data-dismiss="modal">&times;</a>
+      <h3>Create Plan</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+
+        <label>Name</label>
+        <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1" %>
+
+        
+        <label>Cores</label>
+        <%= f.select(:cores, (1..8), {:include_blank => 'Please Select One'}, :style => "width: 400px;", :class => "form-control custom-input-dark") %>
+
+        <label>Memory</label>
+        <%= f.select(:memory, options_for_select((512..4096).step(512).to_a.map{|s| ["#{s}MB (#{(s.to_f/1024).to_f}GB)", s]}), {:include_blank => 'Please Select One'}, :style => "width: 400px;", :class => "form-control custom-input-dark") %>
+        
+        <label>HDD Space</label>
+        <%= f.select(:hdd, options_for_select((20..100).step(10).to_a.map{|s| ["#{s}GB", s]}), {:include_blank => 'Please Select One'}, :style => "width: 400px;", :class => "form-control custom-input-dark") %>
+        
+
+      </div>
+
+    </div>
+    <div class="modal-footer no-border">
+
+      <%= f.submit "Create", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+      <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+</div>
+<%end%>
+
+<script>
+$(document).ready(function() {
+  $('.create').click(function() {
+    modal = $('#create-modal');
+    $('#create_name', modal).val('');
+    modal.modal('show');
+
+  });
+});
+</script>
+
+<%= render "shared/footer" %>

@@ -1,0 +1,69 @@
+<div class="clearfix mb-3">
+  <div id="hostname-container" style="float: left;">
+    <div class="hostname">
+      <%if params[:id] != nil%>
+        <% Vm.where(:uuid => params[:id]).pluck(:hostname, :ip_address).map do |hostname, ip| %>
+        <%= hostname %> (<%= ip %>)
+      <%end%>
+      <%else%>
+        Create your Virtual Server
+      <%end%>
+    </div>
+    <%if params[:id] != nil%>
+      <div class="server-status">
+        <span class="label server-status">GETTING STATUS</span>
+      </div>
+    <%end%>
+  </div>
+
+  <div id="vm-controls" class="float-right" style="display: flex; flex-direction: row; flex-wrap: none;">
+    <div>
+      <%if params[:id] != nil%>
+        <button class="btn btn-small btn-controls btn-danger" data-vserverid="" type="button" data-toggle="dropdown" busy="disabled"> 
+          Power State<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#" class="vserver-boot" data-vserverid="">
+              <i class="icon-play"></i> Boot
+            </a>
+          </li>
+          <li>
+            <a href="#" class="vserver-reset" data-vserverid="">
+              <i class="icon-refresh"></i> Restart
+            </a>
+          </li>
+          <li>
+            <a href="#" class="vserver-poweroff" data-vserverid="">
+              <i class="icon-off"></i> Power Off
+            </a>
+          </li>
+        </ul>
+      <%end%>
+    </div>
+    <div style="margin-left: 10px;">
+      <%if params[:id] != nil%>
+        <button class="btn btn-small btn-controls btn-success btn-controls btn-console" data-vserverid="" type="button" data-toggle="dropdown" href="<%= vnc_path %>" class="launchconsole" target="_blank">
+          Console<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu pull-right">
+          <li>
+            <a href="<%= vnc_path %>" class="launchconsole" target="_blank">
+              <i class="icon-heart"></i>AJAX Based Console
+            </a>
+          </li>
+          <li class="disabled">
+            <a href="#">
+              <i class="icon-plus"></i> More features
+            </a>
+          </li>
+          <li class="disabled">
+            <a href="#">
+              <i class="icon-fire"></i> May not work behind firewalls
+            </a>
+          </li>
+        </ul>
+      <%end%>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,2 @@
+class OsTemplate < ApplicationRecord
+end

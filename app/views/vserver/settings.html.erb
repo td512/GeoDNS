@@ -1,0 +1,44 @@
+<% content_for :title, "Virtual Server Settings" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+<%= render "shared/navbar" %>
+<%= render "shared/vserver_options" %>
+
+<%= render "shared/vserver_tabs_settings" %>
+
+<div id="settings">
+
+  <div class="row">
+    <div class="span6">
+
+      <div class="section-header">Virtual Server Settings</div>
+
+      <ul class="settings-form">
+        <li>
+
+          <form action="<%= vserver_settings_path %>" method="post" id="hostname" class="form">
+            <div class="title">Change Hostname</div>
+
+
+            <p>Change the display name of your virtual server.</p>
+
+
+            <input type="text" class="input-xlarge" placeholder="<% Vm.where(:uuid => params[:id]).pluck(:hostname).map do |hostname| %><%= hostname %><%end%>" name="hostname" busy="disabled">
+
+            <button class="btn btn-primary" type="submit" busy="disabled">Save</button>
+
+            <p class="help"><b>Hostnames</b> are limited to 30 characters and must be a <a href="http://tools.ietf.org/html/rfc1123">valid format</a>.</p>
+
+          </form>
+
+        </li>
+      </ul>
+
+  </div>
+
+  </div>
+</div>
+
+<%= render "shared/footer" %>
+<%= render "shared/vm_status" %>

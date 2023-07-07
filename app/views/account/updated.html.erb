@@ -1,0 +1,88 @@
+<% content_for :title, "Account" %>
+<% content_for :new_layout, "1" %>
+<% session[:account] = account_path %>
+<div class="loader">
+  <div class="loading-animation"></div>
+</div>
+<%= render 'shared/alerts' %>
+<%= render "shared/navbar" %>
+
+
+<section class="pb-5">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col d-flex align-items-center">
+        <div class="d-inline-block p-3 p-md-4 rounded-circle bg-primary-alt">
+          <img src="/assets/img/icons/theme/general/settings-1.svg" alt="Confirmation Icon" class="icon bg-primary" data-inject-svg="data-inject-svg">
+        </div>
+        <div class="ml-4">
+          <h1 class="mb-2 text-light">Account Settings</h1>
+          <div class="lead">Manage your profile here.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="tab-content pt-5">
+  <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+    <div class="container">
+      <div class="row mb-4 mb-lg-5">
+        <div class="col">
+          <div class="d-flex align-items-md-center">
+            <img src="<%= gravatar_url(current_user.email, 100) %>" alt="Avatar" class="avatar avatar-lg flex-shrink-0">
+            <div class="ml-4">
+              <a href="https://gravatar.com" class="btn btn-sm btn-primary">Update at Gravatar</a>
+              <div class="text-small mt-3">For best results, use an image at least 1024px by 1024px in either .jpg or .png format</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-4 mb-md-5 align-items-start">
+        <div class="col-lg-4 order-lg-2 mb-4 mb-lg-0 pl-lg-5">
+          <div class="alert alert-primary">Your information is always kept safe and can never be accessed by third parties.
+          </div>
+        </div>
+        <div class="col-lg-8 border-lg-right pr-lg-5">
+          <div class="row mb-lg-5">
+            <div class="col">
+              <h3 class="text-light">Account Details</h3>
+            </div>
+          </div>
+          <%= form_for(:session, url: account_path) do |f| %>
+            <%= render "shared/updated" %>
+            <div class="alert alert-warning alert-block">
+              <h4>Hey! Listen!</h4>
+              You must ticket support to change your <b>Profile Info</b>.
+            </div>
+            <div class="row form-row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="first-name">First Name</label>
+                  <input type="text" disabled class="form-control custom-input-dark" id="first-name" value="<%= @current_user.first_name %>">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="last-name">Last Name</label>
+                  <input type="text" disabled class="form-control custom-input-dark" id="last-name" value="<%= @current_user.last_name %>">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" disabled value="<%= @current_user.email %>" class="form-control custom-input-dark">
+              <small>Used to log in to your account</small>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <%= f.password_field :password, :id => "new-password", :class => "form-control custom-input-dark custom-input-dark", :value => "", :pattern => ".{8,}" %>
+              <small>New Password (minimum 8 characters)</small>
+            </div>
+            <button class="btn btn-primary" type="submit">Save changes</button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<%= render "shared/footer" %>

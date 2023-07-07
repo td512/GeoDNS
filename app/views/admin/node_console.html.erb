@@ -1,0 +1,55 @@
+<% content_for :title, "Console" %>
+<% content_for :font, "https://fonts.googleapis.com/css?family=PT+Sans" %>
+<% content_for :font_narrow, "https://fonts.googleapis.com/css?family=PT+Sans+Narrow" %>
+<% content_for :framework, "bootstrap.css" %>
+<% content_for :frameworkr, "bootstrap-responsive.css" %>
+<% content_for :stylesheet, "console.css" %>
+<% content_for :body, "1" %>
+<% content_for :vnc, "1" %>
+<% content_for :fa, "font-awesome.min.css" %>
+<% content_for :faie, "font-awesome-ie7.min.css" %>
+<% content_for :bss, "bootstrapSwitch.css" %>
+		<div class="navbar navbar-inverse navbar-static-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a href="#"><span class="brand">Neutron Admin Console</span></a>
+				</div>
+			</div>
+		</div>
+
+		<div id="noVNC_canvas" width="640" height="480" style="cursor: default;">
+			<% n = Node.find_by(id: params[:id]) %>
+			<iframe src="http://<%= n.ip %>/api/v1/console/" width="640" height="480" style="border:none;"></iframe>
+		</div>
+
+<script>
+function resizewindow() {
+
+	var width, height;
+
+	height = $('.navbar').height();
+	height += $('#noVNC_canvas').height();
+
+	// this takes into consideration the location & status bars...hopefully :(
+
+	height += window.outerHeight - window.innerHeight;
+
+	width = $('#noVNC_canvas').width();
+	width += window.outerWidth - window.innerWidth;
+
+	// this is incase the virtual server is powered off so it doesn't snap entirely
+
+	if(width < 640) {
+		width = 640;
+	}
+
+	if(height < 480) {
+		height = 480;
+	}
+
+	window.resizeTo(width, height);
+
+}
+resizewindow();
+window.setInterval(resizewindow, 1000);
+</script>

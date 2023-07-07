@@ -1,0 +1,95 @@
+<% content_for :title, "Users" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+
+<%= render "shared/navbar" %>
+
+<div class="container pt-4">
+
+<h1 class="text-white">Administration Dashboard</h1>
+
+<%= render "shared/admin_navbar_users" %>
+  <div class="span9">
+
+
+      <div class="tab-content">
+
+        <table class="table table-bordered table-striped" id="vservers">
+          
+          <thead>
+            <tr>
+              <th style="text-align: center;">Name</th>
+              <th style="text-align: center;">Email</th>
+              <th style="text-align: center;">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+              <% User.all.each do |user| %>
+                <tr class="table-item">
+                  <th style="text-align: center;"><a target="_blank" href="https://lmgtfy.com/?q=<%=user.first_name%>+<%=user.last_name%>"><%= user.first_name %> <%= user.last_name %></a></th>
+                  <th style="text-align: center;"><%= user.email %></th>
+                  <th style="text-align: center;"><a href="<%if user.enabled == "1" %><%= admin_lock_user_path(user.id) %>">Lock<%else%><%= admin_unlock_user_path(user.id) %>">Unlock<%end%></a> / <% if user.level == "0" %><a href="<%= admin_create_admin_path(user.id) %>">Make Admin</a><% else %><a href="<%= admin_create_user_path(user.id) %>">Make User</a><% end %> / <a href="#" class="edit" data-fname="<%= user.first_name %>" data-lname="<%= user.last_name %>" data-uid="<%= user.id %>" data-email="<%= user.email %>">Edit</a></th>
+              </tr><% end %>
+                </tbody>
+        </table>
+                </div>
+              </div>
+            </div>
+
+
+      </div>
+      <%= form_for(:user, :url => admin_edit_users_path) do |f| %>
+      <div id="modal" class="modal hide fade">
+  			<div class="modal-header">
+  				<a class="close" data-dismiss="modal">&times;</a>
+  				<h3>Edit User</h3>
+  			</div>
+  			<div class="modal-body">
+  				<p>
+
+  				<div class="password">
+
+  					<label>First Name</label>
+            <%= f.text_field :fname, :style => "width: 400px;" %>
+
+  					<br />
+            <label>Last Name</label>
+            <%= f.text_field :lname, :style => "width: 400px;" %>
+            <%= f.hidden_field :userid %>
+  					<br />
+            <label>Email</label>
+            <%= f.text_field :email, :style => "width: 400px;" %>
+  					<br />
+
+  				</div>
+
+  				</p>
+  			</div>
+  			<div class="modal-footer">
+
+          <%= f.submit "Edit", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+  				<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+  			</div>
+  		</div>
+      <%end%>
+
+    </div>
+<script>
+$(document).ready(function() {
+	$('.edit').click(function() {
+    fname = $(this).data('fname');
+    lname = $(this).data('lname');
+    uid = $(this).data('uid');
+    email = $(this).data('email');
+		modal = $('#modal');
+    $('#user_fname').attr("value", fname);
+    $('#user_lname').attr("value", lname);
+    $('#user_userid').attr("value", uid);
+    $('#user_email').attr("value", email);
+		modal.modal('show');
+
+	});
+  });
+  </script>
+<%= render "shared/footer" %>

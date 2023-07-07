@@ -1,0 +1,57 @@
+<% content_for :title, "Log In" %>
+<% content_for :new_layout, "1" %>
+
+<style>body, html { overflow: hidden; }</style>
+
+<div class="loader">
+  <div class="loading-animation"></div>
+</div>
+
+<section class="row no-gutters p-0 bg-light min-vh-100">
+  <div class="col-lg-6 d-none d-lg-block order-lg-2">
+    <img class="flex-fill" src="/images/unsplash.jpg" alt="Image">
+  </div>
+  <div class="col-lg-6">
+    <section class="p-0 bg-custom-dark text-white">
+      <div class="container min-vh-lg-100 d-flex flex-column justify-content-between text-center py-4 py-md-5">
+        <div class="row justify-content-center my-5">
+          <div class="col-xl-7 col-lg-8">
+            <h1 class="h2 text-center mb-lg-5"><%= image_tag "logo-text-white.png", :height => '55', :class => 'logo' %> </h1>
+            <div class="card card-body shadow text-left text-white custom-item-bg-dark">
+              <div class="alert alert-primary" role="alert">
+                Yay! You've been logged out.
+              </div>
+              <%= form_for(:session, url: login_path, :html => {:class => 'vertical-form'}) do |f| %>
+                <div class="form-group">
+                  <%= f.email_field :email, :placeholder => "Email Address", :class => "form-control custom-input-dark" %>
+                </div>
+                <div class="form-group">
+                  <%= f.password_field :password, :placeholder => "Password", :class => "form-control custom-input-dark" %>
+                  <div class="text-right text-small mt-2">
+                    <a href="/reset">Forgot Password?</a>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="custom-control custom-checkbox text-small">
+                    <input type="checkbox" class="custom-control-input" id="sign-in-remember">
+                  </div>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+              <% end %>
+            </div>
+            <% if !User.first %>
+              <div class="text-center text-small mt-3">
+                Don't have an account? <a class="text-white" href="/signup">Sign up here</a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
+  <img src="/assets/img/icons/interface/icon-arrow-up.svg" alt="Icon" class="icon bg-white" data-inject-svg>
+</a>
+

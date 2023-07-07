@@ -1,0 +1,118 @@
+<% content_for :title, "Create" %>
+<% content_for :new_layout, "1" %>
+
+<%= render "shared/alerts" %>
+<%= render "shared/navbar" %>
+<%= render "shared/vserver_options" %>
+
+<%= render "shared/vserver_tabs_overview" %>
+
+<div class="alert alert-success alert-block">
+  <h4>Need help?</h4>
+  <ul>
+    <li>Specify your desired name, and operating system</li>
+    <li>Everything else is automatic. Plan selection coming soon</li>
+  </ul>
+</div>
+
+<div class="row">
+  <div class="span3">
+    <div class="sidenav affix-top" data-spy="affix" data-offset-top="320">
+      <div class="section-header">Categories</div>
+      <ul class="nav nav-list"><% OsCollection.pluck(:url, :name).map do |url, name|%>
+                                                                                          <li><a href="#<%= url %>" data-toggle="tab"><i class="icon-chevron-right pull-right"></i><%=name%> (<%=OsTemplate.where(:belongs_to => name).count%>)</a></li><%end%>
+                                                                                                                                          </ul>
+    </div>
+  </div>
+  <div class="span9">
+
+    <div class="tab-content">
+
+      <div class="tab-pane active" style="position: relative; top: 100px;">
+        <p style="font-size: 40px; text-align: center;">Please pick a category.</p>
+      </div>
+      <% OsCollection.pluck(:name, :url, :description).map do |name, url, description|%>
+
+
+        <div class="tab-pane" id="<%= url %>">
+
+                        <div class="alert alert-info alert-block">
+              <h4>About these templates</h4>
+              <%= raw description %><br>
+              <br>
+            </div>
+          <table class="table table-bordered table-striped">
+            <caption>Operating Systems</caption>
+            <colgroup>
+              <col class="span1">
+              <col class="span1">
+            </colgroup>
+
+            <tbody>
+              <% OsTemplate.where(:belongs_to => name).pluck(:name, :os_image).map do |tname, os_image|%>
+                              <tr>
+                <td>
+                  <div class="media">
+                    <a class="pull-left" href="#">
+
+                      <img class="media-object" src="/images/<%= os_image %>.png">
+                    </a>
+                    <div class="media-body">
+                      <h4 class="media-heading"><%= tname %>  </h4>
+                      <% tname %>											</div>
+                  </div>
+                </td>
+                <td class="td-btn-reinstall">
+                  <button name="mediaid" type="button" class="reinstall btn btn-danger" data-medianame="<%= tname %>">This one</button>
+                </td>
+              </tr>
+              <%end%>
+                            </tbody>
+          </table>
+        </div><%end%>
+
+      <p></p>
+    </div>
+    <%= form_for(:vm, :url => new_vserver_path) do |f| %>
+    <div id="install-modal" class="modal hide fade">
+			<div class="modal-header">
+				<a class="close" data-dismiss="modal">&times;</a>
+				<h3>Create Virtual Server</h3>
+			</div>
+			<div class="modal-body">
+				<p>
+
+				<label>Selected Template</label>
+				<span class="uneditable-input medianame" style="width: 400px;"></span>
+
+				<div class="password">
+
+					<label>Choose a name</label>
+          <%= f.hidden_field :os %>
+          <%= f.text_field :hostname, :style => "width: 400px;" %>
+
+					<br />
+
+					<label>Finally, choose your plan</label>
+          <%= f.collection_select(:plan, Plan.all, :id, :name, {:include_blank => 'Please Select One'}, :style => "width: 400px;") %>
+
+					<br />
+
+				</div>
+
+				</p>
+			</div>
+			<div class="modal-footer">
+
+        <%= f.submit "Create!", :id => "reinstall-modal-reinstall-btn", :class => "btn btn-danger"%>
+				<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			</div>
+		</div>
+    <%end%>
+
+    </div>
+  </div>
+  </div>
+
+<%= render "shared/footer" %>
+<script src="/javascripts/install.js"></script>

@@ -1,0 +1,41 @@
+<div class="navbar-container">
+  <nav class="navbar navbar-expand-lg navbar-dark ">
+    <div class="container">
+      <a class="navbar-brand navbar-brand-dynamic-color fade-page" href="/">
+        <img alt="Scorpio" data-inject-svg src="/images/neutron.svg" style="width: 200px; height: 100px; ">
+      </a>
+      <div class="d-flex align-items-center order-lg-3">
+        <button aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+          <img alt="Navbar Toggler Open Icon" class="navbar-toggler-open icon icon-sm svg-filter-white" data-inject-svg src="/assets/img/icons/interface/icon-menu.svg">
+          <img alt="Navbar Toggler Close Icon" class="navbar-toggler-close icon icon-sm svg-filter-white" data-inject-svg src="/assets/img/icons/interface/icon-x.svg">
+        </button>
+      </div>
+      <div class="collapse navbar-collapse order-3 order-lg-2 justify-content-lg-end" id="navigation-menu">
+        <ul class="navbar-nav my-3 my-lg-0">
+          <li class="nav-item">
+            <a href="/dash" class="nav-link nav-item nav-item-center-height fade-page text-white">Dashboard</a>
+          </li>
+          <% if current_user.level > 0 %>
+            <li class="nav-item">
+                <a href="/admin" class="nav-link nav-item nav-item-center-height fade-page text-white">Administration</a>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <div class="dropdown">
+              <a aria-expanded="false" aria-haspopup="true" class="dropdown-toggle nav-link nav-item arrow-bottom after-icon-white" data-toggle="dropdown-grid" href="#"><img class="avatar avatar-xs" src="<%= gravatar_url(current_user.email, 50) %>" alt="Avatar" /></a>
+              <div class="row dropdown-menu">
+                <div class="col-auto custom-item-bg-dark" data-dropdown-content>
+                  <div class="dropdown-grid-menu custom-item-bg-dark">
+                    <a href="<%= account_path %>" class="dropdown-item fade-page text-white">Edit Profile</a>
+                    <a href="<%= activity_path %>" class="dropdown-item fade-page text-white">Account Activity</a>
+                    <%= link_to "Log out", logout_path, method: "delete", :class => "dropdown-item fade-page text-white" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>

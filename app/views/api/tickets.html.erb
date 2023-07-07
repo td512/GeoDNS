@@ -1,0 +1,3 @@
+<% Ticket.where(:owner => @user.email).pluck(:title, :status, :date, :ticket_id).reverse.map do |title, status, date, ticket_id| %>
+{"title":"<%=title%>", "ticket_status":"<%=status%>", "date":"<%=date%>", "ticket_id":"<%=ticket_id%>", "status":"ok"}
+<%end%>
