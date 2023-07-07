@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_202750) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_07_232847) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,83 +24,34 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_202750) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "addresses", id: :serial, force: :cascade do |t|
-    t.string "address"
-    t.string "belongs_to"
-    t.string "used"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
   create_table "announcements", id: :serial, force: :cascade do |t|
     t.string "announcements"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "billings", id: :serial, force: :cascade do |t|
-    t.string "owner"
-    t.string "date_created"
-    t.string "date_due"
-    t.string "amount"
-    t.string "paid"
-    t.string "uuid"
-    t.string "description"
-    t.string "transaction_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+  create_table "records", force: :cascade do |t|
+    t.text "name"
+    t.integer "owner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "record_type"
+    t.text "value"
+    t.integer "ttl"
   end
 
-  create_table "ip_pools", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "range_start"
-    t.string "range_end"
-    t.string "subnet_mask"
-    t.string "gateway"
-    t.string "owner"
-    t.string "used"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "os_collections", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "url"
-    t.string "description"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "os_templates", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "image_location"
-    t.string "belongs_to"
-    t.string "os_image"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "plans", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "cores"
-    t.string "memory"
-    t.string "hdd"
-    t.string "used"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "tickets", id: :serial, force: :cascade do |t|
-    t.string "owner"
-    t.string "title"
-    t.string "body"
-    t.string "date"
-    t.string "last_reply"
-    t.string "status"
-    t.string "ticket_id"
-    t.string "ticket_num"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+  create_table "restrictions", force: :cascade do |t|
+    t.integer "owner"
+    t.boolean "allow"
+    t.boolean "enabled"
+    t.text "country"
+    t.text "state"
+    t.text "city"
+    t.text "isp"
+    t.text "connection_type"
+    t.text "asn"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -116,25 +67,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_202750) do
     t.string "style"
     t.integer "level"
     t.boolean "enabled"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "vms", id: :serial, force: :cascade do |t|
-    t.string "hostname"
-    t.string "os"
-    t.string "ip_address"
-    t.string "disk"
-    t.string "memory"
-    t.string "traffic"
-    t.string "uuid"
-    t.string "owner"
-    t.string "port"
-    t.string "ws_port"
-    t.string "vnc_pw"
-    t.string "disk_uuid"
-    t.string "hv"
-    t.string "mac"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end

@@ -1,4 +1,5 @@
 require 'rubydns'
+require 'domainatrix'
 
 INTERFACES = [ 
         [:udp, "0.0.0.0", 5300],
@@ -18,21 +19,28 @@ PTR = IN::PTR
 SOA = IN::SOA
 TXT = IN::TXT
 Name = DNS::Name
-DOMAINS = ['td512.dev', 'funce.dev']
-RECORDS = ['a.td512.dev', 'b.funce.dev']
 
 RubyDNS::run_server(INTERFACES) do
   otherwise do |transaction, query|
-    puts "Question: #{transaction.question}"
-    puts "Is Transaction ANAME? #{transaction.resource_class == A}"
-    puts "Is Transaction AAAA? #{transaction.resource_class == AAAA}"
-    puts "Is Transaction CNAME? #{transaction.resource_class == CNAME}"
-    puts "Is Transaction SRV? #{transaction.resource_class == SRV}"
-    puts "Is Transaction MX? #{transaction.resource_class == MX}"
-    puts "Is Transaction NS? #{transaction.resource_class == NS}"
-    puts "Is Transaction PTR? #{transaction.resource_class == PTR}"
-    puts "Is Transaction SOA? #{transaction.resource_class == SOA}"
-    puts "Is Transaction TXT? #{transaction.resource_class == TXT}"
+    # Works round method overloads
+    question = "#{transaction.question}"
+    puts "Processing DNS Question for #{question}"
+    host = Domainatrix.parse(question)
+    domain = "#{host.domain}.#{host.public_suffix}"
+    record = host.subdomain
+    domain = Zone.find_by(name: domain)
+    # If we don't know about the Zone we should halt execution here
+    unless domain.nil?
+      transaction.fail!(:NXDomain)
+      record = Record.find_by(name: record, owner: domain.id, record_type: "#{transaction.resource_class}")
+      if record.nil?
+        transaction.fail!(:NXDomain)
+      else
+        transaction.respond!(record.value, {ttl: (record.ttl || 3600)})
+      end
+    else
+      transaction.fail!(:NXDomain)
+    end
   end
 end
 
