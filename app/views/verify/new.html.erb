@@ -1,16 +1,40 @@
 <% content_for :title, "Verify your email" %>
-<% content_for :font, "https://fonts.googleapis.com/css?family=Montserrat:200" %>
-<% content_for :stylesheet, "login.css" %>
-<% content_for :login, "1" %>
-<ul class="notice errors">
-<li>Please enter the verification code we sent you.</li>
-</ul>
-<%= image_tag "logo-text-white.png", :height => '55', :class => 'logo' %> <!-- 180^2 for signup -->
+<% content_for :new_layout, "1" %>
 
-<%= form_for(:session, url: verify_path, :html => {:class => 'vertical-form'}) do |f| %>
-<legend>
-Verify
-</legend>
-<%= f.text_field :code, :placeholder => "Verification Code", :maxlength => 12 %>
-   <%= f.submit "Verify" %>
-<% end %>
+<style>body, html { overflow: hidden; }</style>
+
+<div class="loader">
+  <div class="loading-animation"></div>
+</div>
+
+<section class="row no-gutters p-0 bg-light min-vh-100">
+  <div class="col-lg-6 d-none d-lg-block order-lg-2">
+    <img class="flex-fill" src="/images/unsplash.jpg" alt="Image">
+  </div>
+  <div class="col-lg-6">
+    <section class="p-0 bg-gradient text-white">
+      <div class="container min-vh-lg-100 d-flex flex-column justify-content-between text-center py-4 py-md-5">
+        <div class="row justify-content-center my-5">
+          <div class="col-xl-7 col-lg-8">
+            <h1 class="h2 text-center mb-lg-5"><%= image_tag "logo-text-white.png", :height => '55', :class => 'logo' %> </h1>
+            <div class="card card-body shadow text-left text-dark custom-item-bg-dark">
+                <div class="alert alert-primary" role="alert">
+                  We sent you a code! Please enter it here.
+                </div>
+              <%= form_for(:session, url: verify_path, :html => {:class => 'vertical-form'}) do |f| %>
+                <div class="form-group">
+                  <%= f.text_field :code, :placeholder => "Verification Code", :maxlength => 12, :class => "form-control custom-input-dark"  %>
+                </div>
+                <button class="btn btn-primary btn-block" type="submit">Sign Up</button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<a href="#top" class="btn btn-primary rounded-circle btn-back-to-top" data-smooth-scroll data-aos="fade-up" data-aos-offset="2000" data-aos-mirror="true" data-aos-once="false">
+  <img src="/assets/img/icons/interface/icon-arrow-up.svg" alt="Icon" class="icon bg-white" data-inject-svg>
+</a>

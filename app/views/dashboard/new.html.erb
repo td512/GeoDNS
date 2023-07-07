@@ -9,43 +9,21 @@
 
   <h1 class="text-white">Dashboard</h1>
 
-  <div id="buttons" class="container mb-3">
-    <div class="clearfix">
-      <div class="float-right">
-        <a href="<%= new_vserver_path %>"><input type="submit" value="New Server" class="btn btn-small btn-success create" data-disable-with="New Server"></a>
-      </div>
-    </div>
-  </div>
-
     <table class="table" id="vservers">
       <thead>
       <tr>
         <th width="30" style="text-align: center; border: none;">Name</th>
-        <th style="border: none;">Operating System</th>
-        <th style="text-align: center; border: none;">IP Address</th>
-        <th style="text-align: center; border: none;">Disk Space</th>
-        <th style="text-align: center; border: none;">Memory</th>
+        <th style="text-align: center; border: none;">Verified</th>
       </tr>
       </thead>
       <tbody>
-      <% Vm.where(:owner => current_user.email).pluck(:uuid, :hostname, :os, :ip_address, :disk, :memory).reverse.map do |uuid, hostname, os, ip_address, disk, memory| %>
+      <% Zone.where(:owner => current_user.id).each do |zone| %>
         <tr class="table-item">
           <td style="text-align: center; border: none;">
-            <a href="<%= vserver_path(uuid) %>"><%= hostname %></a>
+            <a href="<%= zone_path(zone.route_token) %>"><%= zone.name %></a>
           </td>
           <td style="border: none;">
-            <%= os %>
-          </td>
-          <td style="text-align: center; border: none;">
-            <%= ip_address %>
-          </td>
-          <td style="text-align: center; border: none;">
-            <%= disk %>
-          </td>
-          <td style="text-align: center; font-weight: bold; border: none;">
-							<span class="text-success">
-								<%= memory %>
-							</span>
+            <%= zone.verified ? "Yes" : "No" %>
           </td>
         </tr>
       <% end %>

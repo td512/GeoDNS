@@ -100,7 +100,7 @@
     }
 
 			window.onscriptsload = function () {
-        <% hv = Node.find_by(id: Vm.find_by(:uuid => params[:id]).hv)
+        <% hv = Zone.find_by(id: Vm.find_by(:uuid => params[:id]).hv)
 				Vm.where(:uuid => params[:id]).pluck(:ws_port, :vnc_pw).reverse.map do |ws_port, vnc_pw| %>
 				var host = '<%= hv.ip %>';
 				var port = '<%= ws_port %>';
@@ -141,7 +141,7 @@
 				}
 			});
 
-      $('#vserver-start').click(function() {
+      $('#zone-start').click(function() {
       if(confirm('Are you sure you want to start your server?')) {
     	$.get('/vm/'+serverid+'/start')
     		.done(function() {
@@ -149,7 +149,7 @@
     	}
     });
 
-			$('#vserver-reset').click(function() {
+			$('#zone-reset').click(function() {
 				if(confirm('Are you sure you want to reboot your server?')) {
 				$.get('/vm/'+serverid+'/restart')
 					.done(function() {
@@ -157,7 +157,7 @@
 				}
 							});
 
-              $('#vserver-poweroff').click(function() {
+              $('#zone-poweroff').click(function() {
               if(confirm('Are you sure you want to stop your server?')) {
             	$.get('/vm/'+serverid+'/stop')
             		.done(function() {

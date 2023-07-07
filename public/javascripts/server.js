@@ -21,7 +21,7 @@ function scorpio_status() {
 			}
 		});
 	}
-	$('#vm-controls .vserver-boot').click(function() {
+	$('#vm-controls .zone-boot').click(function() {
   if(confirm('Are you sure you want to start your server?')) {
 	$.get('/vm/'+serverid+'/start')
 		.done(function() {
@@ -29,7 +29,7 @@ function scorpio_status() {
 	});
 	}
 });
- $('#vm-controls .vserver-reset').click(function() {
+ $('#vm-controls .zone-reset').click(function() {
    if(confirm('Are you sure you want to restart your server?')) {
 	 $.get('/vm/'+serverid+'/restart')
 	 .done(function() {
@@ -37,7 +37,7 @@ function scorpio_status() {
 	 });
  }
 });
-$('#vm-controls .vserver-poweroff').click(function() {
+$('#vm-controls .zone-poweroff').click(function() {
 	if(confirm('Are you sure you want to stop your server?')) {
 	$.get('/vm/'+serverid+'/stop')
 	.done(function() {

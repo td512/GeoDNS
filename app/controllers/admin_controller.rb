@@ -47,33 +47,6 @@ class AdminController < ApplicationController
       redirect_to admin_templates_path
     end
   end
-  def close_ticket
-    t = Ticket.find_by(ticket_id: params[:id])
-    t.status = "Closed"
-    if t.save
-      redirect_to admin_support_path
-    end
-  end
-  def open_ticket
-    t = Ticket.find_by(ticket_id: params[:id])
-    t.status = "Open"
-    if t.save
-      redirect_to admin_support_path
-    end
-  end
-  def reply_ticket
-    if params[:ticket][:reply].present?
-      time = Time.now
-      ti = Ticket.find_by(ticket_id: params[:id])
-      @t = Ticket.new(:owner => ti.owner, :body => simple_format(params[:ticket][:reply]), :date => time.strftime("%Y-%m-%d"), :last_reply => "Staff", :status => 'Open', :ticket_id => params[:ticket][:num], :ticket_num => ti.ticket_num)
-      if @t.save
-        action = Action.create(:action => '[ADMINISTRATOR] Update Ticket', :owner => ti.owner, :ip => "HIDDEN", :date => time.strftime("%Y-%m-%d"), :status => 'Success')
-        action.save
-        PostmarkMailer.support(@t, ti.owner).deliver_now
-        redirect_to admin_support_view_path(params[:ticket][:num])
-      end
-    end
-  end
   def create_announcement
       a = Announcement.new(:announcements => params[:create][:announcement])
       if a.save
@@ -144,23 +117,9 @@ class AdminController < ApplicationController
     end
     redirect_to admin_users_path
   end
-  def void_bill
-    b = Billing.find_by(uuid: params[:id])
-    b.paid = "Yes"
-    if b.save
-      redirect_to admin_billing_path
-    end
-  end
-  def unvoid_bill
-    b = Billing.find_by(uuid: params[:id])
-    b.paid = "No"
-    if b.save
-      redirect_to admin_billing_path
-    end
-  end
   def destroy
     vm = Vm.find_by(uuid: params[:id])
-    server = Node.find_by(id: vm.hv)
+    server = Zone.find_by(id: vm.hv)
     RestClient.post "http://#{server.ip}/api/v1/destroy/#{params[:id]}", {"owner" => current_user.id, "disk" => vm}.to_json, {content_type: :json}
     RestClient.post "http://#{server.ip}/api/v1/remove_eb", {"ip" => vm.ip_address, "mac" => vm.mac}.to_json, {content_type: :json}
     t = Time.now
@@ -179,16 +138,16 @@ class AdminController < ApplicationController
     vm.delete
     redirect_to admin_servers_path
   end
-  def add_node
-    n = Node.new(:name => params[:create][:name], :ip => params[:create][:hostname], :vm_count => '0')
+  def add_zone
+    n = Zone.new(name: params[:create][:name], owner: params[:create][:owner], verified: false)
     if n.save
-      redirect_to admin_nodes_path
+      redirect_to admin_zones_path
     end
   end
-  def destroy_node
-    n = Node.find_by(id: params[:id])
+  def destroy_zone
+    n = Zone.find_by(id: params[:id])
     n.delete
-    redirect_to admin_nodes_path
+    redirect_to admin_zones_path
   end
   def create_pool
       i = IpPool.new(:name => params[:create][:name], :range_start => params[:create][:start], :range_end => params[:create][:end], :subnet_mask => params[:create][:subnet], :gateway => params[:create][:gateway], :owner => params[:create][:belongs], :used => '0')
@@ -209,16 +168,5 @@ class AdminController < ApplicationController
     Address.where(:belongs_to => i.range_start).destroy_all
     i.delete
     redirect_to admin_pools_path
-  end
-  def create_plan
-    pl = Plan.new(:name => params[:create][:name], :cores => params[:create][:cores], :memory => params[:create][:memory], :hdd => params[:create][:hdd], :used => '0')
-    if pl.save
-      redirect_to admin_plans_path
-    end
-  end
-  def destroy_plan
-    pl = Plan.find_by(id: params[:id])
-    pl.delete
-    redirect_to admin_plans_path
   end
 end

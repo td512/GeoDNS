@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2017_06_11_222758) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_07_202750) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -59,14 +59,6 @@ ActiveRecord::Schema[7.0].define(version: 2017_06_11_222758) do
     t.string "gateway"
     t.string "owner"
     t.string "used"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
-  create_table "nodes", id: :serial, force: :cascade do |t|
-    t.string "name"
-    t.string "vm_count"
-    t.string "ip"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
   end
@@ -145,6 +137,15 @@ ActiveRecord::Schema[7.0].define(version: 2017_06_11_222758) do
     t.string "mac"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "zones", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.boolean "verified"
+    t.integer "owner"
+    t.text "route_token"
   end
 
 end

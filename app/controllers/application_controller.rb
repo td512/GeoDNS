@@ -4,7 +4,10 @@ class ApplicationController < ActionController::Base
   before_action :init
 
 def current_user
-  @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  begin
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  rescue ActiveRecord::RecordNotFound
+  end
 end
 def require_user
   redirect_to '/login' unless current_user

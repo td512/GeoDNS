@@ -18,29 +18,25 @@
             <div id="buttons" class="mb-3">
               <div class="clearfix">
                 <div class="float-right">
-                  <a href="#"><input type="submit" value="Add Node" class="btn btn-small btn-success create" data-disable-with="Add Node"></a>
+                  <a href="#"><input type="submit" value="Add Zone" class="btn btn-small btn-success create" data-disable-with="Add Node"></a>
                 </div>
               </div>
             </div>
 
-            <table class="table table-bordered table-striped" id="vservers">
+            <table class="table table-bordered table-striped" id="zones">
               <thead>
                 <tr>
                   <th style="text-align: center;">Name</th>
-                  <th style="text-align: center;">Hostname</th>
-                  <th style="text-align: center;">Used RAM</th>
-                  <th style="text-align: center;">VMs</th>
+                  <th style="text-align: center;">Verified</th>
                   <th style="text-align: center;">Options</th>
                 </tr>
               </thead>
               <tbody>
-                <% Node.all.each do |n| %>
+                <% Zone.all.each do |zone| %>
                   <tr class="table-item">
-                    <th style="text-align: center;"><%= n.name %></th>
-                    <th style="text-align: center;"><%= n.ip %></th>
-                    <th style="text-align: center;"><%= "59.851".to_f.round(1) %>%</th>
-                    <th style="text-align: center;"><%= n.vm_count %></th>
-                    <th style="text-align: center;"><a href="<%= admin_nodes_destroy_path(n.id) %>">Delete</a> / <a target="_blank" class="launchconsole" href="<%= admin_nodes_console_path(n.id) %>">Console</a></th>              
+                    <th style="text-align: center;"><%= zone.name %></th>
+                    <th style="text-align: center;"><%= zone.verified %></th>
+                    <th style="text-align: center;"><%= link_to "Destroy Zone", admin_destroy_zones_path(zone.id) %></th>
                   </tr>
                 <% end %>
               </tbody>
@@ -52,23 +48,21 @@
   </div>
 </div>
 
-<%= form_for(:create, :url => admin_create_nodes_path) do |f| %>
+<%= form_for(:create, :url => admin_create_zones_path) do |f| %>
 <div id="create-modal" class="modal hide fade">
   <div class="container modal-dialog modal-content card custom-item-bg-dark custom-modal text-white">
     <div class="modal-header no-border">
       <a class="close" data-dismiss="modal">&times;</a>
-      <h3>Add Node</h3>
+      <h3>Add Zone</h3>
     </div>
     <div class="modal-body">
 
         <div class="form-group">
 
           <label>Name</label>
-          <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Name", :rows => "1" %>
-
-          <label>IP Address or Hostname</label>
-          <%= f.text_field :hostname, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Address", :rows => "1"  %>
-
+          <%= f.text_field :name, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Zone Name", :rows => "1" %>
+          <label>Owner</label>
+          <%= f.text_field :owner, :style => "width: 400px;", :class => "form-control custom-input-dark", :placeholder => "Owner", :rows => "1" %>
         </div>
     </div>
     <div class="modal-footer no-border">

@@ -1,4 +1,4 @@
-class VserverController < ApplicationController
+class ZoneController < ApplicationController
   before_action :require_user
   before_action :check_user
   skip_before_action :verify_authenticity_token
@@ -17,7 +17,7 @@ class VserverController < ApplicationController
       port = "40888"
     end
     if params[:vm][:hostname].present?
-    server = Node.order("RANDOM()").first
+    server = Zone.order("RANDOM()").first
     pool = IpPool.where(:owner => server.id).first
     address = Address.where(['used = ? AND belongs_to = ?', '0', pool.range_start.to_s]).order("RANDOM()").pluck(:address).first
     pool.used = pool.used.to_i + 1
@@ -44,7 +44,7 @@ a.save
   end
   def destroy
     vm = Vm.find_by(uuid: params[:id])
-    server = Node.find_by(id: vm.hv)
+    server = Zone.find_by(id: vm.hv)
     RestClient.post "http://#{server.ip}/api/v1/destroy/#{params[:id]}", {"owner" => current_user.id, "disk" => vm.disk_uuid}.to_json, {content_type: :json}
     RestClient.post "http://#{server.ip}/api/v1/remove_eb", {"ip" => vm.ip_address, "mac" => vm.mac}.to_json, {content_type: :json}
     a = Address.find_by(address: vm.ip_address)
@@ -68,7 +68,7 @@ a.save
 
   def status
     vm = Vm.find_by(uuid: params[:id])
-    server = Node.find_by(id: vm.hv)
+    server = Zone.find_by(id: vm.hv)
     #req = RestClient.get "http://#{server.ip}/api/v1/status/#{params[:id]}"
     #res = JSON.parse(req.body)
     msg = {:status => "running"} # res["server_status"]}
@@ -76,7 +76,7 @@ a.save
   end
   def startserver
     vm = Vm.find_by(uuid: params[:id])
-    server = Node.find_by(id: vm.hv)
+    server = Zone.find_by(id: vm.hv)
     req = RestClient.get "http://#{server.ip}/api/v1/power/on/#{params[:id]}"
     res = JSON.parse(req.body)
     vm = Vm.find_by(uuid: params[:id])
@@ -85,13 +85,13 @@ a.save
   end
   def stopserver
     vm = Vm.find_by(uuid: params[:id])
-    server = Node.find_by(id: vm.hv)
+    server = Zone.find_by(id: vm.hv)
     req = RestClient.get "http://#{server.ip}/api/v1/power/off/#{params[:id]}"
     res = JSON.parse(req.body)
   end
   def rebootserver
     vm = Vm.find_by(uuid: params[:id])
-    server = Node.find_by(id: vm.hv)
+    server = Zone.find_by(id: vm.hv)
     req = RestClient.get "http://#{server.ip}/api/v1/power/reset/#{params[:id]}"
     res = JSON.parse(req.body)
     vm = Vm.find_by(uuid: params[:id])
@@ -114,7 +114,7 @@ end
 def swapmedia
   vm = Vm.find_by(uuid: params[:id])
   tmpl = OsTemplate.find_by_name(params[:os_name])
-  server = Node.find_by(id: vm.hv)
+  server = Zone.find_by(id: vm.hv)
   req = RestClient.post "http://#{server.ip}/api/v1/swapcd/#{params[:id]}", {"iso" => tmpl.image_location}.to_json, {content_type: :json}
   redirect_to "/vm/#{params[:id]}/media/mounted"
 end

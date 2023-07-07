@@ -22,6 +22,9 @@ Rails.application.routes.draw do
   scope '/dash' do
     get '/' => 'dashboard#new', as: :dash
   end
+  scope '/zone' do
+    get '/:id' => 'zone#index', as: :zone
+  end
   # Admin
   scope '/admin' do
     get '/' => 'admin#new', as: :admin
@@ -67,12 +70,11 @@ Rails.application.routes.draw do
       get '/destroy/:id' => 'admin#destroy_announcement', as: :admin_announcements_destroy
       post '/edit' => 'admin#edit_announcement', as: :admin_announcements_edit
     end
-    scope '/nodes' do
-      get '/' => 'admin#nodes', as: :admin_nodes
-      get '/destroy/:id' => 'admin#destroy_node', as: :admin_nodes_destroy
-      get '/console/:id' => 'admin#node_console', as: :admin_nodes_console
-      post '/add' => 'admin#add_node', as: :admin_create_nodes
-      get '/delete/:id' => 'admin#destroy_node', as: :admin_destroy_nodes
+    scope '/zones' do
+      get '/' => 'admin#zones', as: :admin_zones
+      get '/destroy/:id' => 'admin#destroy_node', as: :admin_zones_destroy
+      post '/add' => 'admin#add_zone', as: :admin_create_zones
+      get '/delete/:id' => 'admin#destroy_zone', as: :admin_destroy_zones
     end
     scope '/pools' do
       get '/' => 'admin#pools', as: :admin_pools
@@ -111,22 +113,6 @@ Rails.application.routes.draw do
     post '/' => 'verify#verify'
     get '/error' => 'verify#error', as: :verify_error
   end
-  # vServers
-  scope '/vm' do
-    get '/:id' => 'vserver#index', as: :vserver
-    get '/:id/media' => 'vserver#media', as: :vserver_media
-    get '/:id/media/mounted' => 'vserver#media_mounted', as: :vserver_media_mounted
-    post '/:id/media' => 'vserver#swapmedia'
-    get '/:id/networking' => 'vserver#networking', as: :vserver_networking
-    get '/:id/settings' => 'vserver#settings', as: :vserver_settings
-    post '/:id/settings' => 'vserver#changehostname'
-    post '/:id/destroy' => 'vserver#destroy', as: :vserver_destroy
-    get '/:id/status' => 'vserver#status'
-    get '/:id/start' => 'vserver#startserver'
-    get '/:id/restart' => 'vserver#rebootserver'
-    get '/:id/stop' => 'vserver#stopserver'
-    get '/:id/vnc' => 'vserver#vnc', as: :vnc
-  end
   scope '/api' do
     scope '/v1' do
       get '/auth' => 'api#authenticate'
@@ -151,8 +137,8 @@ Rails.application.routes.draw do
     end
   end
   scope '/create' do
-    get '/' => 'vserver#create', as: :new_vserver
-    post '/' => 'vserver#make'
+    get '/' => 'zone#create', as: :new_zone
+    post '/' => 'zone#make'
   end
   scope '/errors' do
     get '/400' => 'errors#e400'

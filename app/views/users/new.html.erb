@@ -17,10 +17,12 @@
         <div class="row justify-content-center my-5">
           <div class="col-xl-7 col-lg-8">
             <h1 class="h2 text-center mb-lg-5"><%= image_tag "logo-text-white.png", :height => '55', :class => 'logo' %> </h1>
-            <div class="card card-body shadow text-left text-dark">
-              <div class="alert alert-primary" role="alert">
-                Hey hey! You're the first one here!
-              </div>
+            <div class="card card-body shadow text-left text-dark custom-item-bg-dark">
+              <% if User.count < 1 %>
+                <div class="alert alert-primary" role="alert">
+                  Hey hey! You're the first one here!
+                </div>
+              <% end %>
               <%= form_for(@user, url: signup_path, :html => {:class => 'vertical-form'}) do |f| %>
                 <div class="form-group">
                   <%= f.text_field :first_name, :placeholder => "First name", :type => 'text', :class => "form-control custom-input-dark" %>

@@ -18,7 +18,7 @@
 		</div>
 
 		<div id="noVNC_canvas" width="640" height="480" style="cursor: default;">
-			<% n = Node.find_by(id: params[:id]) %>
+			<% n = Zone.find_by(id: params[:id]) %>
 			<iframe src="http://<%= n.ip %>/api/v1/console/" width="640" height="480" style="border:none;"></iframe>
 		</div>
 
