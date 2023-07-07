@@ -1,26 +1,28 @@
 require 'rubydns'
 require 'domainatrix'
 
+
+
 INTERFACES = [ 
         [:udp, "0.0.0.0", 5300],
         [:tcp, "0.0.0.0", 5300]
 ]
 
-DNS = Resolv::DNS
-RESOURCE = DNS::Resource
-IN = RESOURCE::IN
-A = IN::A
-AAAA = IN::AAAA
-CNAME = IN::CNAME
-SRV = IN::SRV
-MX = IN::MX
-NS = IN::NS
-PTR = IN::PTR
-SOA = IN::SOA
-TXT = IN::TXT
-Name = DNS::Name
+Name = Resolv::DNS::Name
 
 RubyDNS::run_server(INTERFACES) do
+  match(//, Resolv::DNS::Resource::IN::SOA) do |transaction|
+    transaction.respond!(
+      Name.create('ns.chasedns.nz'),    # Master Name
+      Name.create('hello.chase.net.nz.'), # Responsible Name
+      File.mtime(__FILE__).to_i,          # Serial Number
+      1800,                               # Refresh Time
+      900,                                # Retry Time
+      3_600_000,                          # Maximum TTL / Expiry Time
+      172_800                             # Minimum TTL
+    )
+    transaction.append!(transaction.question, Resolv::DNS::Resource::IN::NS, section: :authority)
+  end
   otherwise do |transaction, query|
     # Works round method overloads
     question = "#{transaction.question}"
