@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  continent: MyText
+  country: MyText
+  country_code: MyText
+  state: MyText
+  state_code: MyText
+  city: MyText
+  postal_code: MyText
+  autonomous_system_number: MyText
+  autonomous_system_organization: MyText
+  isp: MyText
+  organization: MyText
+  connection_type: MyText
+
+two:
+  continent: MyText
+  country: MyText
+  country_code: MyText
+  state: MyText
+  state_code: MyText
+  city: MyText
+  postal_code: MyText
+  autonomous_system_number: MyText
+  autonomous_system_organization: MyText
+  isp: MyText
+  organization: MyText
+  connection_type: MyText

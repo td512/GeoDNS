@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_232847) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_08_023715) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_232847) do
     t.string "announcements"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "geo_ips", force: :cascade do |t|
+    t.text "continent"
+    t.text "country"
+    t.text "country_code"
+    t.text "state"
+    t.text "state_code"
+    t.text "city"
+    t.text "postal_code"
+    t.text "autonomous_system_number"
+    t.text "autonomous_system_organization"
+    t.text "isp"
+    t.text "organization"
+    t.text "connection_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "latitude"
+    t.text "longitude"
+    t.text "ip"
   end
 
   create_table "records", force: :cascade do |t|

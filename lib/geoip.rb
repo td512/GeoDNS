@@ -2,46 +2,33 @@ require 'maxmind/geoip2'
 
 module GeoIP
   class << self
-    def ip_info?(ip)
-      {
-        geolocation: geolocation(ip),
-        isp: isp(ip),
-        connection_type: connection_type(ip)
-      }
+
+    LIST_URL = "http://www.team-cymru.org/Services/Bogons/fullbogons-ipv4.txt"
+    last_update = Time.current
+
+    def addresses
+      @addresses ||= load
+      if last_update + 6.hours < Time.current
+        @addresses = load
+      end
     end
 
-    def geolocation(ip)
-      ip = mmdb(File.join("geoip", "GeoIP2-City.mmdb")).city(ip)
-      {
-        continent: ip.continent.code,
-        country: ip.country.name,
-        state: ip.most_specific_subdivision.name,
-        city: ip.city.name,
-        postal_code: ip.postal.code
-      }
+    def load
+      bogons = []
+
+      Net::HTTP.get(URI.parse(LIST_URL)).each_line do |line|
+        if line !~ /^#/
+          bogons << IPAddr.new(line.chomp)
+        end
+      end
+
+      @addresses = bogons
     end
 
-    def isp(ip)
-      ip = mmdb(File.join("geoip", "GeoIP2-ISP.mmdb")).isp(ip)
+    def bogon?(addr)
+      addr = IPAddr.new(addr)
 
-      {
-       asn: ip.autonomous_system_number,
-       aso: ip.autonomous_system_organization,
-       isp: ip.isp,
-       org: ip.organization
-      }
-    end
-
-    def connection_type(ip)
-      mmdb(File.join("geoip", "GeoIP2-Connection-Type.mmdb")).connection_type(ip).connection_type
-    end
-
-    private
-
-    def mmdb(mmdb)
-      MaxMind::GeoIP2::Reader.new(
-        database: File.join(Rails.root, file),
-        )
+      addresses.any? { |range| range.include?(addr) }
     end
   end
 end
