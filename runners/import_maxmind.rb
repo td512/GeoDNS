@@ -43,8 +43,19 @@ def import_records(network, subnet)
       puts "(INFO) Address #{ip} wasn't found in the MaxMind Database. Inserting as bogon."
       rows.push({
                   ip:,
+                  continent: 'ZZ',
                   country: 'BOGON',
                   country_code: 'ZZ',
+                  state: nil,
+                  state_code: nil,
+                  city: 'BOGON',
+                  postal_code: '0000',
+                  latitude: nil,
+                  longitude: nil,
+                  autonomous_system_number: 'BOGON',
+                  autonomous_system_organization: 'BOGON',
+                  isp: 'BOGON',
+                  organization: 'BOGON',
                   connection_type: 'BOGON'
                 })
     end
