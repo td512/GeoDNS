@@ -75,7 +75,7 @@ Parallel.each((0..255), in_processes: schedulable_processors) do |subnet|
   import_records(network, subnet)
 end
 $stdout.clear_screen
-puts "(INFO) Importing records into database. This may take a while. Please be patient."
+puts "(INFO) Importing records for #{network}.0.0.0/8 into database. This may take a while. Please be patient."
 progressbar = ProgressBar.create(format: '%a |%b>%i| %p%% (%c/%C) %E',
                    title: "Records",
                    total: 1,
