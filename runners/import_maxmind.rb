@@ -7,6 +7,7 @@ require 'progressbar'
 require 'io/console'
 
 schedulable_processors = Concurrent.processor_count - 2
+schedulable_processors = 1 if schedulable_processors < 1
 FileUtils.rm_rf(File.join(Rails.root, 'tmp', 'seed-root'))
 FileUtils.mkdir_p(File.join(Rails.root, 'tmp', 'seed-root'))
 
