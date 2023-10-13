@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_08_023715) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_11_125712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,51 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_08_023715) do
     t.string "announcements"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+  end
+
+  create_table "geo_ip2_connection_types", force: :cascade do |t|
+    t.cidr "network"
+    t.text "connection_type"
+  end
+
+  create_table "geo_ip2_isps", force: :cascade do |t|
+    t.cidr "network"
+    t.text "isp"
+    t.text "organization"
+    t.integer "autonomous_system_number"
+    t.text "autonomous_system_organization"
+    t.string "mobile_country_code"
+    t.string "mobile_network_code"
+  end
+
+  create_table "geo_ip2_locations", force: :cascade do |t|
+    t.integer "geoname_id"
+    t.text "locale_code"
+    t.text "continent_code"
+    t.text "continent_name"
+    t.text "country_iso_code"
+    t.text "country_name"
+    t.text "subdivision_1_iso_code"
+    t.text "subdivision_1_name"
+    t.text "subdivision_2_iso_code"
+    t.text "subdivision_2_name"
+    t.text "city_name"
+    t.integer "metro_code"
+    t.text "time_zone"
+    t.boolean "is_in_european_union"
+  end
+
+  create_table "geo_ip2_networks", force: :cascade do |t|
+    t.cidr "network"
+    t.integer "geoname_id"
+    t.integer "registered_country_geoname_id"
+    t.integer "represented_country_geoname_id"
+    t.boolean "is_anonymous_proxy"
+    t.boolean "is_satellite_provider"
+    t.text "postal_code"
+    t.float "latitude"
+    t.float "longitude"
+    t.integer "accuracy_radius"
   end
 
   create_table "geo_ips", force: :cascade do |t|
@@ -72,6 +117,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_08_023715) do
     t.text "asn"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "continent"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
