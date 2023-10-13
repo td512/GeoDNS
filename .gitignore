@@ -70,3 +70,4 @@ yarn-debug.log*
 
 /.idea/
 .DS_Store
+geoip/geodns.sql
